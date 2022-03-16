@@ -15,15 +15,20 @@
         <div class="order-number">{{ burger.id }}</div>
         <div>{{ burger.nome }}</div>
         <div>{{ burger.pao }}</div>
-        <div>{{ burger.carne}}</div>
+        <div>{{ burger.carne }}</div>
         <div>
           <ul>
-            <li v-for="(opcional, index) in burger.opcionais" :key="index">{{ opcional }}</li>
+            <li v-for="(opcional, index) in burger.opcionais" :key="index">
+              {{ opcional }}
+            </li>
           </ul>
         </div>
         <div>
           <select name="status" class="status">
             <option value="">Selecione</option>
+            <option v-for="s in status" :key="s.id" value="s.tipo">
+              {{ s.tipo }}
+            </option>
           </select>
           <button class="delete-btn">Cancelar</button>
         </div>
@@ -50,14 +55,20 @@ export default {
 
       this.burgers = data;
 
-      console.log(this.burgers)   
+      console.log(this.burgers);
       //resgatar o status
 
+      this.getStatus();
+    },
+    async getStatus() {
+      const req = await fetch("http://localhost:3001/status");
+      const data = await req.json();
+      this.status = data;
     },
   },
   mounted() {
     this.getPedidos();
-  }
+  },
 };
 </script>
 
